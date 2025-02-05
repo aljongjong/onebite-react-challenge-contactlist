@@ -27,6 +27,12 @@ export default function ContactItem({
   };
   const onClickUpdateCancelButton = () => {
     setIsUpdate(false);
+    setUpdateInfo({
+      id: id,
+      name: name,
+      contactInfo: contactInfo,
+      date: date,
+    });
   };
 
   const onClickDeleteButton = () => {

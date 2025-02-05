@@ -6,20 +6,8 @@ import { useRef, useReducer } from "react";
 const mockData = [
   {
     id: 0,
-    name: "이정환",
-    contactInfo: "king199777@gmail.com",
-    date: new Date().getTime(),
-  },
-  {
-    id: 1,
-    name: "이정환2",
-    contactInfo: "king199778@gmail.com",
-    date: new Date().getTime(),
-  },
-  {
-    id: 2,
-    name: "이정환3",
-    contactInfo: "king199779@gmail.com",
+    name: "나일론",
+    contactInfo: "techno_king@tesla.com",
     date: new Date().getTime(),
   },
 ];
@@ -38,8 +26,8 @@ function reducer(state, action) {
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, []);
-  const idRef = useRef(0);
+  const [state, dispatch] = useReducer(reducer, mockData);
+  const idRef = useRef(1);
 
   const onCreate = (info) => {
     dispatch({

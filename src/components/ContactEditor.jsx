@@ -1,25 +1,18 @@
 import "./ContactEditor.css";
-import { useState, useRef } from "react";
+import { useState, useRef, memo } from "react";
 
-export default function ContactEditor({ onCreate }) {
+export default memo(function ContactEditor({ onCreate }) {
   const [info, setInfo] = useState({
     name: "",
-    contactInfo: "",
+    contact: "",
   });
   const nameRef = useRef();
-  const contactInfoRef = useRef();
+  const contactRef = useRef();
 
-  const onChangeName = (e) => {
+  const onChangeInfo = (e) => {
     setInfo({
       ...info,
-      name: e.target.value,
-    });
-  };
-
-  const onChangeContactInfo = (e) => {
-    setInfo({
-      ...info,
-      contactInfo: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -28,15 +21,15 @@ export default function ContactEditor({ onCreate }) {
       alert("이름을 입력해주세요.");
       nameRef.current.focus();
       return;
-    } else if (info.contactInfo === "") {
+    } else if (info.contact === "") {
       alert("연락처를 입력해주세요.");
-      contactInfoRef.current.focus();
+      contactRef.current.focus();
       return;
     }
     onCreate(info);
     setInfo({
       name: "",
-      contactInfo: "",
+      contact: "",
     });
   };
 
@@ -46,20 +39,22 @@ export default function ContactEditor({ onCreate }) {
       <div className="input_wrapper">
         <input
           ref={nameRef}
-          onChange={onChangeName}
+          onChange={onChangeInfo}
           value={info.name}
           className="name"
+          name="name"
           placeholder="이름 ..."
         />
         <input
-          ref={contactInfoRef}
-          onChange={onChangeContactInfo}
-          value={info.contactInfo}
+          ref={contactRef}
+          onChange={onChangeInfo}
+          value={info.contact}
           className="contact"
+          name="contact"
           placeholder="연락처(이메일) ..."
         />
       </div>
       <button onClick={onSubmit}>Add</button>
     </div>
   );
-}
+});

@@ -1,13 +1,13 @@
 import "./App.css";
 import ContactEditor from "./components/ContactEditor";
 import ContactList from "./components/ContactList";
-import { useRef, useReducer } from "react";
+import { useRef, useReducer, useCallback } from "react";
 
 const mockData = [
   {
     id: 0,
     name: "나일론",
-    contactInfo: "techno_king@tesla.com",
+    contact: "techno_king@tesla.com",
     date: new Date().getTime(),
   },
 ];
@@ -29,36 +29,36 @@ function App() {
   const [state, dispatch] = useReducer(reducer, mockData);
   const idRef = useRef(1);
 
-  const onCreate = (info) => {
+  const onCreate = useCallback((info) => {
     dispatch({
       type: "CREATE",
       data: {
         id: idRef.current++,
         name: info.name,
-        contactInfo: info.contactInfo,
+        contact: info.contact,
         date: new Date().getTime(),
       },
     });
-  };
+  }, []);
 
-  const onDelete = (targetId) => {
+  const onDelete = useCallback((targetId) => {
     dispatch({
       type: "DELETE",
       targetId: targetId,
     });
-  };
+  }, []);
 
-  const onUpdate = (updateInfo) => {
+  const onUpdate = useCallback((updateInfo) => {
     dispatch({
       type: "UPDATE",
       data: {
         id: updateInfo.id,
         name: updateInfo.name,
-        contactInfo: updateInfo.contactInfo,
+        contact: updateInfo.contact,
         date: new Date().getTime(),
       },
     });
-  };
+  }, []);
 
   return (
     <div className="App">

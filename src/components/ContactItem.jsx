@@ -1,83 +1,37 @@
 import "./ContactItem.css";
-import { useState } from "react";
+import { useState, memo } from "react";
+import EditableItem from "./EditableItem";
+import ReadableItem from "./ReadableItem";
 
-export default function ContactItem({
-  id,
-  name,
-  contactInfo,
-  date,
-  onDelete,
-  onUpdate,
-}) {
-  const [updateInfo, setUpdateInfo] = useState({
-    id: id,
-    name: name,
-    contactInfo: contactInfo,
-    date: date,
-  });
+export default memo(function ContactItem({ onDelete, onUpdate, ...props }) {
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const onClickUpdateButton = () => {
-    if (!isUpdate) {
-      setIsUpdate(!isUpdate);
-    } else {
+  const onClickUpdateButton = (updateInfo) => {
+    if (isUpdate) {
       onUpdate(updateInfo);
-      setIsUpdate(!isUpdate);
     }
+    setIsUpdate(!isUpdate);
   };
+
   const onClickUpdateCancelButton = () => {
     setIsUpdate(false);
-    setUpdateInfo({
-      id: id,
-      name: name,
-      contactInfo: contactInfo,
-      date: date,
-    });
-  };
-
-  const onClickDeleteButton = () => {
-    if (window.confirm("삭제 하시겠습니까?")) {
-      onDelete(id);
-    }
-  };
-
-  const onChangeName = (e) => {
-    setUpdateInfo({
-      ...updateInfo,
-      name: e.target.value,
-    });
-  };
-  const onChangeContactInfo = (e) => {
-    setUpdateInfo({
-      ...updateInfo,
-      contactInfo: e.target.value,
-    });
   };
 
   return (
     <div className="ContactItem">
       {isUpdate ? (
-        <>
-          <div className="name">
-            <input onChange={onChangeName} value={updateInfo.name} />
-          </div>
-          <div className="contact">
-            <input
-              onChange={onChangeContactInfo}
-              value={updateInfo.contactInfo}
-            />
-          </div>
-          <button onClick={onClickUpdateButton}>✅ Save</button>
-          <button onClick={onClickUpdateCancelButton}>🚫 Cancel</button>
-        </>
+        <EditableItem
+          {...props}
+          onClickUpdateButton={onClickUpdateButton}
+          onClickUpdateCancelButton={onClickUpdateCancelButton}
+        />
       ) : (
-        <>
-          <div className="name">{name}</div>
-          <div className="contact">{contactInfo}</div>
-          <button onClick={onClickUpdateButton}>🔧 Update</button>
-          <button onClick={onClickDeleteButton}>🗑️ Remove</button>
-        </>
+        <ReadableItem
+          {...props}
+          onDelete={onDelete}
+          onClickUpdateButton={onClickUpdateButton}
+        />
       )}
     </div>
   );
-}
+});

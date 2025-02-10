@@ -1,7 +1,9 @@
 import "./ContactEditor.css";
-import { useState, useRef, memo } from "react";
+import { useState, useRef, memo, useContext } from "react";
+import { ContactDispatchContext } from "../App";
 
-export default memo(function ContactEditor({ onCreate }) {
+export default function ContactEditor() {
+  const { onCreate } = useContext(ContactDispatchContext);
   const [info, setInfo] = useState({
     name: "",
     contact: "",
@@ -57,4 +59,4 @@ export default memo(function ContactEditor({ onCreate }) {
       <button onClick={onSubmit}>Add</button>
     </div>
   );
-});
+}

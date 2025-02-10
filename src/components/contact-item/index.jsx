@@ -1,9 +1,12 @@
-import "./ContactItem.css";
-import { useState, memo } from "react";
-import EditableItem from "./EditableItem";
-import ReadableItem from "./ReadableItem";
+import "./contact-item.css";
+import { useState, memo, useContext } from "react";
+import EditableItem from "./editable-item";
+import ReadableItem from "./readable-item";
+import { ContactDispatchContext } from "../../App";
 
-export default memo(function ContactItem({ onDelete, onUpdate, ...props }) {
+export default memo(function ContactItem({ ...state }) {
+  const { onUpdate } = useContext(ContactDispatchContext);
+
   const [isUpdate, setIsUpdate] = useState(false);
 
   const onClickUpdateButton = (updateInfo) => {
@@ -21,16 +24,12 @@ export default memo(function ContactItem({ onDelete, onUpdate, ...props }) {
     <div className="ContactItem">
       {isUpdate ? (
         <EditableItem
-          {...props}
+          {...state}
           onClickUpdateButton={onClickUpdateButton}
           onClickUpdateCancelButton={onClickUpdateCancelButton}
         />
       ) : (
-        <ReadableItem
-          {...props}
-          onDelete={onDelete}
-          onClickUpdateButton={onClickUpdateButton}
-        />
+        <ReadableItem {...state} onClickUpdateButton={onClickUpdateButton} />
       )}
     </div>
   );
